@@ -16,9 +16,6 @@ export async function registerRoutes(
   app.get("/health", (_req, res) => {
     res.json({ status: "ok", timestamp: new Date().toISOString() });
   });
-
-  // Initialize Queue (Non-blocking)
-  initQueue().catch(console.error);
   
   // Auth Setup
   await setupAuth(app);
