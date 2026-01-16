@@ -1,4 +1,4 @@
-import { users, emails, type User, type InsertUser, type Email, type InsertEmail } from "@shared/schema";
+import { users, emails, type User, type Email, type InsertEmail } from "@shared/schema";
 import { db } from "./db";
 import { eq, desc, and } from "drizzle-orm";
 import { authStorage, type IAuthStorage } from "./replit_integrations/auth/storage";
@@ -19,12 +19,12 @@ export class DatabaseStorage implements IStorage {
     return authStorage.getUser(id);
   }
 
-  async upsertUser(user: InsertUser): Promise<User> {
+  async upsertUser(user: any): Promise<User> {
     return authStorage.upsertUser(user);
   }
 
   // Email methods
-  async createEmail(insertEmail: InsertEmail): Promise<Email> {
+  async createEmail(insertEmail: InsertEmail & { userId: string }): Promise<Email> {
     const [email] = await db.insert(emails).values(insertEmail).returning();
     return email;
   }
