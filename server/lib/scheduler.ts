@@ -32,10 +32,7 @@ export async function scheduleBatch(userId: string, data: any) {
       recipient,
       subject,
       body,
-      scheduledTime,
-      startTime: start,
-      delay,
-      rateLimit: hourlyLimit
+      scheduledTime
     });
 
     // Since we're removing Redis, we'll process it immediately if scheduled for now,

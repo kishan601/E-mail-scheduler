@@ -1,4 +1,4 @@
-import { users, emails, type User, type Email, type InsertEmail } from "@shared/schema";
+import { emails, type User, type Email, type InsertEmail } from "@shared/schema";
 import { db } from "./db";
 import { eq, desc, and } from "drizzle-orm";
 import { authStorage, type IAuthStorage } from "./replit_integrations/auth/storage";
