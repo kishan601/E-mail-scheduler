@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Send, CheckCircle2, Zap, Shield, ArrowRight, Clock } from "lucide-react";
+import dashboardPreview from "@assets/image_1768560090256.png";
 
 export default function Landing() {
   const handleLogin = () => {
@@ -56,15 +57,20 @@ export default function Landing() {
         </div>
 
         {/* Dashboard Preview */}
-        <div className="mt-20 w-full max-w-6xl mx-auto rounded-xl border bg-card/50 shadow-2xl overflow-hidden backdrop-blur-sm animate-in fade-in slide-in-from-bottom-12 duration-1000 delay-200">
-          <div className="h-10 border-b bg-muted/30 flex items-center px-4 gap-2">
-            <div className="h-3 w-3 rounded-full bg-red-400/80" />
-            <div className="h-3 w-3 rounded-full bg-yellow-400/80" />
-            <div className="h-3 w-3 rounded-full bg-green-400/80" />
+        <div className="mt-20 w-full max-w-6xl mx-auto rounded-3xl border border-[#E2E8F0] bg-white shadow-2xl overflow-hidden animate-in fade-in slide-in-from-bottom-12 duration-1000 delay-200">
+          <div className="h-12 border-b bg-[#F8FAFC] flex items-center px-6 gap-2">
+            <div className="h-3.5 w-3.5 rounded-full bg-[#EF4444]/80" />
+            <div className="h-3.5 w-3.5 rounded-full bg-[#F59E0B]/80" />
+            <div className="h-3.5 w-3.5 rounded-full bg-[#10B981]/80" />
+            <div className="ml-4 text-xs font-semibold text-[#64748B] tracking-wide uppercase">MailFlow Dashboard Preview</div>
           </div>
-          <div className="aspect-[16/9] bg-gradient-to-br from-muted/20 to-muted/10 flex items-center justify-center text-muted-foreground/30 font-display text-4xl">
-            {/* Ideally an image here, but abstract representation works for code gen */}
-            Dashboard Preview UI
+          <div className="relative group">
+            <img 
+              src={dashboardPreview} 
+              alt="MailFlow Dashboard Preview" 
+              className="w-full h-auto object-cover transition-transform duration-700 group-hover:scale-[1.02]"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent pointer-events-none" />
           </div>
         </div>
       </section>
