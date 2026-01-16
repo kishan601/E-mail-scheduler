@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import { Send, CheckCircle2, Zap, Shield, ArrowRight } from "lucide-react";
+import { Send, CheckCircle2, Zap, Shield, ArrowRight, Clock } from "lucide-react";
 
 export default function Landing() {
   const handleLogin = () => {
