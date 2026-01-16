@@ -49,7 +49,11 @@ export async function initQueue() {
     // Test connection
     await new Promise<void>((resolve) => {
       const timeout = setTimeout(() => {
-        console.warn("Redis connection timeout. Queue will be disabled.");
+        if (process.env.NODE_ENV === "production") {
+          console.warn("Redis connection timeout in production. Queue will be disabled.");
+        } else {
+          console.warn("Redis connection timeout. Queue will be disabled.");
+        }
         connection.disconnect();
         resolve();
       }, 2000);
