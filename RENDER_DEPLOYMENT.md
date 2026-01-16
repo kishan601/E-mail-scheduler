@@ -7,6 +7,20 @@ Follow these steps to migrate your MailFlow application from Replit to Render.
 - A [GitHub](https://github.com) or GitLab repository with your code.
 - A [Google Cloud Console](https://console.cloud.google.com) project (for Google Auth).
 
+### Getting Google OAuth Credentials (FREE)
+Google OAuth is free for standard authentication usage.
+1.  Go to the [Google Cloud Console](https://console.cloud.google.com/).
+2.  **Create a New Project** (e.g., "MailFlow").
+3.  Navigate to **APIs & Services > OAuth consent screen**.
+    - Choose **External**.
+    - Fill in the required app information (App name, support email, developer contact).
+4.  Navigate to **APIs & Services > Credentials**.
+    - Click **+ Create Credentials** > **OAuth client ID**.
+    - **Application type**: Web application.
+    - **Name**: MailFlow Web Client.
+    - **Authorized redirect URIs**: Add `https://your-app-name.onrender.com/api/callback/google` (replace with your actual Render URL).
+5.  Copy the **Client ID** and **Client Secret**.
+
 ## 2. Infrastructure Setup on Render
 
 ### PostgreSQL Database
