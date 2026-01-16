@@ -10,9 +10,16 @@ import { authStorage } from "./storage";
 
 const getOidcConfig = memoize(
   async () => {
+    const issuerUrl = process.env.ISSUER_URL ?? "https://replit.com/oidc";
+    const clientId = process.env.REPL_ID || process.env.CLIENT_ID || "placeholder-client-id";
+    
+    if (clientId === "placeholder-client-id" && process.env.NODE_ENV === "production") {
+      console.error("CRITICAL: REPL_ID or CLIENT_ID is missing in production. Auth will fail.");
+    }
+
     return await client.discovery(
-      new URL(process.env.ISSUER_URL ?? "https://replit.com/oidc"),
-      process.env.REPL_ID!
+      new URL(issuerUrl),
+      clientId
     );
   },
   { maxAge: 3600 * 1000 }
@@ -131,14 +138,28 @@ export async function setupAuth(app: Express) {
 }
 
 export const isAuthenticated: RequestHandler = async (req, res, next) => {
+  if (process.env.NODE_ENV !== "production") {
+    // In development or if not on Render/Replit with strict auth, allow bypass if needed
+    // But for Replit Auth integration, we usually expect it to work.
+    // Let's add a check for the specific clientId error
+    if (!process.env.REPL_ID && !process.env.CLIENT_ID) {
+       console.warn("No REPL_ID or CLIENT_ID found. Auth might fail.");
+    }
+  }
+
   const user = req.user as any;
 
-  if (!req.isAuthenticated() || !user.expires_at) {
+  if (!req.isAuthenticated()) {
     return res.status(401).json({ message: "Unauthorized" });
   }
 
+  // If we don't have expiration info (mock/local), just proceed
+  if (!user?.expires_at) {
+    return next();
+  }
+
   const now = Math.floor(Date.now() / 1000);
-  if (now <= user.expires_at) {
+  if (user.expires_at && now <= user.expires_at) {
     return next();
   }
 

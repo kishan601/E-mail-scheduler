@@ -13,7 +13,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { Loader2, Upload, CalendarClock, Mail, AlertCircle, Send } from "lucide-react";
+import { Loader2, Upload, CalendarClock, Mail, AlertCircle, Send, Plus } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import Papa from "papaparse";
 import { z } from "zod";

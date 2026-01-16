@@ -9,7 +9,7 @@ import {
 } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Trash2, Loader2, RefreshCw } from "lucide-react";
+import { Trash2, Loader2, RefreshCw, AlertTriangle } from "lucide-react";
 import { format } from "date-fns";
 import {
   AlertDialog,
