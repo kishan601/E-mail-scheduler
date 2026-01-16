@@ -14,6 +14,11 @@ export async function initQueue() {
 
   console.log("Initializing Queue with REDIS_URL:", process.env.REDIS_URL || "defaulting to localhost");
 
+  if (process.env.NODE_ENV === "production" && !process.env.REDIS_URL) {
+    console.warn("REDIS_URL is not set in production. Queue will be disabled.");
+    return null;
+  }
+
   // Use provided REDIS_URL or default to localhost
   // Note: For Replit, we need an external Redis URL usually.
   const redisUrl = process.env.REDIS_URL || "redis://localhost:6379";
@@ -21,6 +26,8 @@ export async function initQueue() {
   try {
     const connection = new IORedis(redisUrl, {
       maxRetriesPerRequest: null,
+      enableOfflineQueue: false, // Don't queue commands if connection is down
+      connectTimeout: 5000,      // Fail fast
       retryStrategy: (times) => {
         // Stop retrying after 3 times if it fails
         if (times > 3) {
@@ -33,15 +40,19 @@ export async function initQueue() {
 
     // Handle connection errors specifically
     connection.on('error', (err) => {
-      console.error('Redis connection error:', err.message);
+      // Don't log full error if we're shutting down or failed init
+      if (connection.status !== 'end') {
+        console.error('Redis connection error:', err.message);
+      }
     });
 
     // Test connection
     await new Promise<void>((resolve) => {
       const timeout = setTimeout(() => {
         console.warn("Redis connection timeout. Queue will be disabled.");
+        connection.disconnect();
         resolve();
-      }, 1000);
+      }, 2000);
 
       connection.once('connect', () => {
         console.log('Redis connected successfully');
