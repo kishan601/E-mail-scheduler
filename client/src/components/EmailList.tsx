@@ -62,66 +62,66 @@ export function EmailList({ status }: EmailListProps) {
 
   if (!emails || emails.length === 0) {
     return (
-      <div className="flex flex-col items-center justify-center py-24 text-muted-foreground bg-muted/10 rounded-2xl border-2 border-dashed border-muted">
-        <div className="bg-muted p-4 rounded-full mb-4">
-          <RefreshCw className="h-6 w-6 opacity-50" />
+      <div className="flex flex-col items-center justify-center py-32 text-[#64748B] bg-white rounded-[2.5rem] border-2 border-dashed border-[#E2E8F0] shadow-inner">
+        <div className="bg-[#F1F5F9] p-6 rounded-full mb-6 shadow-sm">
+          <RefreshCw className="h-10 w-10 text-[#94A3B8] animate-[spin_4s_linear_infinite]" />
         </div>
-        <h3 className="text-lg font-medium text-foreground">No emails found</h3>
-        <p className="text-sm mt-1">There are no emails with status "{status}".</p>
+        <h3 className="text-2xl font-bold text-[#1E293B]">No emails found</h3>
+        <p className="text-[#64748B] mt-2 text-lg">There are no emails with status "{status}".</p>
       </div>
     );
   }
 
   return (
-    <div className="rounded-xl border shadow-sm bg-card overflow-hidden">
+    <div className="rounded-[2rem] border border-[#E2E8F0] shadow-xl bg-white overflow-hidden transition-all duration-500">
       <Table>
         <TableHeader>
-          <TableRow className="bg-muted/30 hover:bg-muted/30">
-            <TableHead className="w-[300px]">Subject</TableHead>
-            <TableHead>Recipient</TableHead>
-            <TableHead>{status === "scheduled" ? "Scheduled For" : "Sent At"}</TableHead>
-            <TableHead className="w-[100px]">Status</TableHead>
-            <TableHead className="text-right">Actions</TableHead>
+          <TableRow className="bg-[#F8FAFC] border-b border-[#E2E8F0] hover:bg-[#F8FAFC]">
+            <TableHead className="w-[300px] text-[#475569] font-bold py-6 pl-8">Subject</TableHead>
+            <TableHead className="text-[#475569] font-bold py-6">Recipient</TableHead>
+            <TableHead className="text-[#475569] font-bold py-6">{status === "scheduled" ? "Scheduled For" : "Sent At"}</TableHead>
+            <TableHead className="w-[140px] text-[#475569] font-bold py-6">Status</TableHead>
+            <TableHead className="text-right text-[#475569] font-bold py-6 pr-8">Actions</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
           {emails.map((email) => (
-            <TableRow key={email.id} className="group hover:bg-muted/20 transition-colors">
-              <TableCell className="font-medium text-foreground">{email.subject}</TableCell>
-              <TableCell className="text-muted-foreground">{email.recipient}</TableCell>
-              <TableCell>
+            <TableRow key={email.id} className="group hover:bg-[#F1F5F9]/50 transition-all border-b border-[#F1F5F9] last:border-0">
+              <TableCell className="font-semibold text-[#1E293B] py-6 pl-8">{email.subject}</TableCell>
+              <TableCell className="text-[#64748B] py-6 font-medium">{email.recipient}</TableCell>
+              <TableCell className="text-[#64748B] py-6 font-medium">
                 {status === "scheduled" 
                   ? format(new Date(email.scheduledTime), "PPp")
                   : email.sentTime ? format(new Date(email.sentTime), "PPp") : "-"}
               </TableCell>
-              <TableCell>
+              <TableCell className="py-6">
                 <StatusBadge status={email.status} />
               </TableCell>
-              <TableCell className="text-right">
+              <TableCell className="text-right py-6 pr-8">
                 <AlertDialog>
                   <AlertDialogTrigger asChild>
                     <Button 
                       variant="ghost" 
                       size="icon" 
-                      className="text-muted-foreground hover:text-destructive transition-colors opacity-0 group-hover:opacity-100"
+                      className="h-10 w-10 text-[#94A3B8] hover:text-[#EF4444] hover:bg-[#FEF2F2] rounded-xl transition-all opacity-0 group-hover:opacity-100"
                     >
-                      <Trash2 className="h-4 w-4" />
+                      <Trash2 className="h-5 w-5" />
                     </Button>
                   </AlertDialogTrigger>
-                  <AlertDialogContent>
+                  <AlertDialogContent className="rounded-3xl border-[#FEE2E2]">
                     <AlertDialogHeader>
-                      <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
-                      <AlertDialogDescription>
-                        This will permanently delete this email from the queue. This action cannot be undone.
+                      <AlertDialogTitle className="text-xl font-bold text-[#1E293B]">Delete this campaign?</AlertDialogTitle>
+                      <AlertDialogDescription className="text-[#64748B] text-lg">
+                        This will permanently remove the email from your list. This action cannot be reversed.
                       </AlertDialogDescription>
                     </AlertDialogHeader>
-                    <AlertDialogFooter>
-                      <AlertDialogCancel>Cancel</AlertDialogCancel>
+                    <AlertDialogFooter className="gap-3 mt-4">
+                      <AlertDialogCancel className="rounded-xl border-[#E2E8F0] font-semibold">Cancel</AlertDialogCancel>
                       <AlertDialogAction 
-                        className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+                        className="bg-[#EF4444] text-white hover:bg-[#DC2626] rounded-xl font-semibold shadow-lg shadow-red-200"
                         onClick={() => handleDelete(email.id)}
                       >
-                        {deletingId === email.id ? "Deleting..." : "Delete"}
+                        {deletingId === email.id ? "Removing..." : "Delete Campaign"}
                       </AlertDialogAction>
                     </AlertDialogFooter>
                   </AlertDialogContent>
@@ -137,18 +137,18 @@ export function EmailList({ status }: EmailListProps) {
 
 function StatusBadge({ status }: { status: string }) {
   const styles = {
-    scheduled: "bg-blue-100 text-blue-700 hover:bg-blue-200 border-blue-200",
-    processing: "bg-yellow-100 text-yellow-700 hover:bg-yellow-200 border-yellow-200",
-    sent: "bg-green-100 text-green-700 hover:bg-green-200 border-green-200",
-    failed: "bg-red-100 text-red-700 hover:bg-red-200 border-red-200",
-    cancelled: "bg-gray-100 text-gray-700 hover:bg-gray-200 border-gray-200",
+    scheduled: "bg-[#EFF6FF] text-[#2563EB] hover:bg-[#DBEAFE] border-[#DBEAFE] shadow-sm shadow-blue-50",
+    processing: "bg-[#FFFBEB] text-[#D97706] hover:bg-[#FEF3C7] border-[#FEF3C7] shadow-sm shadow-amber-50",
+    sent: "bg-[#ECFDF5] text-[#059669] hover:bg-[#D1FAE5] border-[#D1FAE5] shadow-sm shadow-emerald-50",
+    failed: "bg-[#FEF2F2] text-[#DC2626] hover:bg-[#FEE2E2] border-[#FEE2E2] shadow-sm shadow-red-50",
+    cancelled: "bg-[#F8FAFC] text-[#64748B] hover:bg-[#F1F5F9] border-[#E2E8F0] shadow-sm shadow-slate-50",
   };
   
   const label = status.charAt(0).toUpperCase() + status.slice(1);
   const className = styles[status as keyof typeof styles] || styles.cancelled;
 
   return (
-    <Badge variant="outline" className={`${className} font-medium border`}>
+    <Badge variant="outline" className={`${className} font-bold border-2 px-3 py-1 rounded-lg transition-all`}>
       {label}
     </Badge>
   );

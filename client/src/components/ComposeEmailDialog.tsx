@@ -126,8 +126,8 @@ export function ComposeEmailDialog() {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button className="gap-2 shadow-lg hover:shadow-primary/25 transition-all">
-          <Mail className="h-4 w-4" />
+        <Button className="bg-[#4F46E5] hover:bg-[#4338CA] text-white px-8 py-7 rounded-2xl font-bold shadow-xl shadow-indigo-100 transition-all hover:scale-105 active:scale-95 gap-3">
+          <Send className="h-5 w-5" />
           Compose New Campaign
         </Button>
       </DialogTrigger>
