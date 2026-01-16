@@ -38,25 +38,35 @@ export async function initQueue() {
 
     // Test connection
     await new Promise<void>((resolve, reject) => {
+      const timeout = setTimeout(() => {
+        if (connection.status !== 'ready') {
+          reject(new Error('Redis connection timeout'));
+        } else {
+          resolve();
+        }
+      }, 2000);
+
       connection.once('connect', () => {
         console.log('Redis connected successfully');
+        clearTimeout(timeout);
         resolve();
       });
+
       connection.once('error', (err) => {
-        reject(err);
+        // Only reject if it's the initial connection attempt
+        if (connection.status === 'connecting') {
+          clearTimeout(timeout);
+          reject(err);
+        }
       });
-      // Short timeout for initial connection
-      setTimeout(() => reject(new Error('Redis connection timeout')), 5000);
     }).catch(err => {
       console.warn("Could not connect to Redis. Email scheduling will not work.", err.message);
-      // We don't throw here to allow the app to start without Redis
-      // But queue features won't work
     });
 
     if (connection.status === 'ready' || connection.status === 'connecting') {
-       emailQueue = new Queue("email-queue", { connection });
-       
-       emailWorker = new Worker(
+      emailQueue = new Queue("email-queue", { connection });
+      
+      emailWorker = new Worker(
         "email-queue",
         async (job: Job) => {
           const { emailId } = job.data;
@@ -64,7 +74,7 @@ export async function initQueue() {
 
           try {
             // 1. Fetch email from DB
-            const email = await storage.getEmail(emailId);
+            const email = await (storage as any).getEmail(emailId);
             if (!email) {
               throw new Error(`Email ${emailId} not found`);
             }
@@ -75,18 +85,18 @@ export async function initQueue() {
             }
             
             // Update status to processing
-            await storage.updateEmailStatus(emailId, "processing", undefined, job.id);
+            await (storage as any).updateEmailStatus(emailId, "processing", undefined, job.id);
 
             // 2. Send email
             await sendEmail(email.recipient, email.subject, email.body);
 
             // 3. Update status to sent
-            await storage.updateEmailStatus(emailId, "sent", new Date());
+            await (storage as any).updateEmailStatus(emailId, "sent", new Date());
             console.log(`Email ${emailId} sent successfully`);
 
           } catch (error: any) {
             console.error(`Failed to send email ${emailId}:`, error);
-            await storage.updateEmailStatus(emailId, "failed", undefined, undefined, error.message);
+            await (storage as any).updateEmailStatus(emailId, "failed", undefined, undefined, error.message);
             throw error; // Let BullMQ handle retries if configured
           }
         },

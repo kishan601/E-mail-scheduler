@@ -5,7 +5,7 @@ import { authStorage, type IAuthStorage } from "./replit_integrations/auth/stora
 
 export interface IStorage extends IAuthStorage {
   // Email methods
-  createEmail(email: InsertEmail & { startTime?: Date, delay?: number, rateLimit?: number }): Promise<Email>;
+  createEmail(email: InsertEmail & { userId: string }): Promise<Email>;
   getEmail(id: number): Promise<Email | undefined>;
   getUserEmails(userId: string): Promise<Email[]>;
   updateEmailStatus(id: number, status: string, sentTime?: Date, jobId?: string, error?: string): Promise<Email>;

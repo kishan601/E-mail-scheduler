@@ -2,9 +2,11 @@ import { pgTable, text, serial, integer, timestamp, boolean } from "drizzle-orm/
 import { createInsertSchema } from "drizzle-zod";
 import { z } from "zod";
 import { relations } from "drizzle-orm";
-
-export * from "./models/auth";
 import { users } from "./models/auth";
+
+export const insertUserSchema = createInsertSchema(users);
+export type User = typeof users.$inferSelect;
+export type InsertUser = z.infer<typeof insertUserSchema>;
 
 export const emails = pgTable("emails", {
   id: serial("id").primaryKey(),
