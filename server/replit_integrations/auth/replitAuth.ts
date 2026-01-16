@@ -92,12 +92,15 @@ export async function setupAuth(app: Express) {
   const ensureStrategy = (domain: string) => {
     const strategyName = `replitauth:${domain}`;
     if (!registeredStrategies.has(strategyName)) {
+      // For Render deployments, use the domain from environment variable if available
+      // otherwise fallback to req.hostname
+      const callbackDomain = process.env.RENDER_EXTERNAL_HOSTNAME || domain;
       const strategy = new Strategy(
         {
           name: strategyName,
           config,
           scope: "openid email profile offline_access",
-          callbackURL: `https://${domain}/api/callback`,
+          callbackURL: `https://${callbackDomain}/api/callback`,
         },
         verify
       );
