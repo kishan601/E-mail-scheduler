@@ -12,6 +12,11 @@ export async function registerRoutes(
   app: Express
 ): Promise<Server> {
   
+  // Health check for Render/External monitoring
+  app.get("/health", (_req, res) => {
+    res.json({ status: "ok", timestamp: new Date().toISOString() });
+  });
+
   // Initialize Queue (Non-blocking)
   initQueue().catch(console.error);
   

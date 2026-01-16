@@ -1,0 +1,29 @@
+services:
+  - type: web
+    name: mailflow
+    runtime: node
+    buildCommand: npm install && npm run build
+    startCommand: npm start
+    envVars:
+      - key: DATABASE_URL
+        fromDatabase:
+          name: mailflow-db
+          property: connectionString
+      - key: REDIS_URL
+        fromService:
+          type: redis
+          name: mailflow-redis
+          property: connectionString
+      - key: SESSION_SECRET
+        generateValue: true
+      - key: NODE_ENV
+        value: production
+
+databases:
+  - name: mailflow-db
+    plan: free
+
+redis:
+  - name: mailflow-redis
+    plan: free
+    ipAllowList: [] # Only allow internal connections
