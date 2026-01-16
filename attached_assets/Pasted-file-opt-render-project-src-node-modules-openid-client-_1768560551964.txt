@@ -1,0 +1,37 @@
+file:///opt/render/project/src/node_modules/openid-client/build/index.js:89
+    const err = new TypeError(message, { cause });
+                ^
+TypeError: "clientId" must be a non-empty string
+    at CodedTypeError (file:///opt/render/project/src/node_modules/openid-client/build/index.js:89:17)
+    at new Configuration (file:///opt/render/project/src/node_modules/openid-client/build/index.js:463:19)
+    at Object.discovery (file:///opt/render/project/src/node_modules/openid-client/build/index.js:244:22)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async S8.maxAge (/opt/render/project/src/dist/index.cjs:76:103369)
+    at async pm (/opt/render/project/src/dist/index.cjs:76:104172)
+    at async O8 (/opt/render/project/src/dist/index.cjs:76:107661)
+    at async /opt/render/project/src/dist/index.cjs:76:109510 {
+  code: 'ERR_INVALID_ARG_TYPE',
+  [cause]: undefined
+}
+Node.js v22.22.0
+==> Exited with status 1
+==> Common ways to troubleshoot your deploy: https://render.com/docs/troubleshooting-deploys
+==> Running 'npm run start'
+> rest-express@1.0.0 start
+> NODE_ENV=production node dist/index.cjs
+Fri, 16 Jan 2026 10:48:11 GMT express-session deprecated req.secret; provide secret option at node:internal/modules/cjs/loader:1706:14
+file:///opt/render/project/src/node_modules/openid-client/build/index.js:89
+    const err = new TypeError(message, { cause });
+                ^
+TypeError: "clientId" must be a non-empty string
+    at CodedTypeError (file:///opt/render/project/src/node_modules/openid-client/build/index.js:89:17)
+    at new Configuration (file:///opt/render/project/src/node_modules/openid-client/build/index.js:463:19)
+    at Object.discovery (file:///opt/render/project/src/node_modules/openid-client/build/index.js:244:22)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async S8.maxAge (/opt/render/project/src/dist/index.cjs:76:103369)
+    at async pm (/opt/render/project/src/dist/index.cjs:76:104172)
+    at async O8 (/opt/render/project/src/dist/index.cjs:76:107661)
+    at async /opt/render/project/src/dist/index.cjs:76:109510 {
+  code: 'ERR_INVALID_ARG_TYPE',
+  [cause]: undefined
+}
