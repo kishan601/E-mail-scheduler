@@ -7,6 +7,10 @@ export default function Landing() {
     window.location.href = "/api/login";
   };
 
+  const handleSignup = () => {
+    window.location.href = "/api/login?prompt=select_account";
+  };
+
   return (
     <div className="min-h-screen bg-background flex flex-col">
       {/* Navigation */}
@@ -20,7 +24,7 @@ export default function Landing() {
           </div>
           <div className="flex gap-4">
             <Button variant="ghost" onClick={handleLogin}>Log in</Button>
-            <Button onClick={handleLogin}>Get Started</Button>
+            <Button onClick={handleSignup}>Get Started</Button>
           </div>
         </div>
       </nav>
@@ -46,7 +50,7 @@ export default function Landing() {
           </p>
           
           <div className="flex flex-col sm:flex-row gap-4 justify-center pt-4">
-            <Button size="lg" className="h-14 px-8 text-lg rounded-full shadow-xl shadow-primary/20 hover:shadow-2xl hover:shadow-primary/30 transition-all hover:-translate-y-1" onClick={handleLogin}>
+            <Button size="lg" className="h-14 px-8 text-lg rounded-full shadow-xl shadow-primary/20 hover:shadow-2xl hover:shadow-primary/30 transition-all hover:-translate-y-1" onClick={handleSignup}>
               Start Scheduling Free
               <ArrowRight className="ml-2 h-5 w-5" />
             </Button>
